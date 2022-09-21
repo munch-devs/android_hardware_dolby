@@ -9,7 +9,7 @@ PRODUCT_COPY_FILES += \
 # DolbyManager
 PRODUCT_PACKAGES += \
     DolbyManager
-    
+
 # Dolby Props
 PRODUCT_VENDOR_PROPERTIES += \
     ro.vendor.audio.dolby.dax.support=true \
@@ -23,6 +23,10 @@ DEVICE_MANIFEST_FILE += \
     $(DOLBY_PATH)/configs/vintf/vendor.dolby.hardware.dms@2.0-service.xml \
     $(DOLBY_PATH)/configs/vintf/vendor.dolby.media.c2@1.0-service.xml
 
+# Init
+PRODUCT_PACKAGES += \
+    init.dolby.rc
+    
 # Media Codec2 Packages
 PRODUCT_PACKAGES += \
     android.hardware.media.c2@1.0.vendor \
