@@ -48,6 +48,10 @@ DEVICE_MANIFEST_FILE += \
     $(DOLBY_PATH)/configs/vintf/vendor.dolby.hardware.dms@2.0-service.xml \
     $(DOLBY_PATH)/configs/vintf/vendor.dolby.media.c2@1.0-service.xml
 
+# Init
+PRODUCT_PACKAGES += \
+    init.dolby.rc
+    
 # Proprietary-files
 PRODUCT_COPY_FILES += \
     $(DOLBY_PATH)/proprietary/vendor/etc/init/vendor.dolby.hardware.dms@2.0-service.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/vendor.dolby.hardware.dms@2.0-service.rc \
