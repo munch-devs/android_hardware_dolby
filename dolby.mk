@@ -38,6 +38,10 @@ PRODUCT_VENDOR_PROPERTIES += \
     vendor.audio.dolby.ds2.enabled=false \
     vendor.audio.dolby.ds2.hardbypass=false
 
+# DolbyManager
+PRODUCT_PACKAGES += \
+    DolbyManager
+
 # HIDL
 DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE += $(DOLBY_PATH)/configs/vintf/dolby_framework_matrix.xml
 DEVICE_MANIFEST_FILE += \
