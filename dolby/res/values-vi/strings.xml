@@ -34,6 +34,7 @@
     <string name="dolby_profile_video">Phim/Video</string>
     <string name="dolby_profile_music">Âm nhạc</string>
     <string name="dolby_profile_voice">Giọng nói</string>
+    <string name="dolby_profile_custom">Tùy chỉnh</string>
 
     <!-- Dolby equalizer presets -->
     <string name="dolby_preset_default">Phẳng (tắt)</string>
