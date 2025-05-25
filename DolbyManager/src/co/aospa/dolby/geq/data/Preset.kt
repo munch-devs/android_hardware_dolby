@@ -7,7 +7,7 @@
 package co.aospa.dolby.geq.data
 
 data class Preset(
-    var name: String,
+    var name: String? = null,
     val bandGains: List<BandGain>,
     var isUserDefined: Boolean = false,
     var isMutated: Boolean = false
