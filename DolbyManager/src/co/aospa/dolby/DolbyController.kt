@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023-24 Paranoid Android
+ * Copyright (C) 2023-25 Paranoid Android
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -23,8 +23,12 @@ internal class DolbyController private constructor(
     private val context: Context
 ) {
     private var dolbyEffect = DolbyAudioEffect(EFFECT_PRIORITY, audioSession = 0)
-    private val audioManager = context.getSystemService(AudioManager::class.java)
+    private val audioManager = context.getSystemService(AudioManager::class.java)!!
     private val handler = Handler(context.mainLooper)
+    private val stereoWideningSupported =
+        context.getResources().getBoolean(R.bool.dolby_stereo_widening_supported)
+    private val volumeLevelerSupported =
+        context.getResources().getBoolean(R.bool.dolby_volume_leveler_supported)
 
     // Restore current profile on every media session
     private val playbackCallback = object : AudioPlaybackCallback() {
@@ -57,10 +61,10 @@ internal class DolbyController private constructor(
             field = value
             dlog(TAG, "setRegisterCallbacks($value)")
             if (value) {
-                audioManager!!.registerAudioPlaybackCallback(playbackCallback, handler)
+                audioManager.registerAudioPlaybackCallback(playbackCallback, handler)
                 audioManager.registerAudioDeviceCallback(audioDeviceCallback, handler)
             } else {
-                audioManager!!.unregisterAudioPlaybackCallback(playbackCallback)
+                audioManager.unregisterAudioPlaybackCallback(playbackCallback)
                 audioManager.unregisterAudioDeviceCallback(audioDeviceCallback)
             }
         }
@@ -91,27 +95,30 @@ internal class DolbyController private constructor(
         }
 
     init {
-        dlog(TAG, "initialized")
-    }
-
-    fun onBootCompleted() {
-        dlog(TAG, "onBootCompleted")
-
         // Restore our main settings
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
         dsOn = prefs.getBoolean(DolbyConstants.PREF_ENABLE, true)
 
         context.resources.getStringArray(R.array.dolby_profile_values)
-            .map { it.toInt() }
-            .forEach { profile ->
-                // Reset dolby first to prevent it from loading bad settings
-                dolbyEffect.resetProfileSpecificSettings(profile)
-                // Now restore our profile-specific settings
-                restoreSettings(profile)
-            }
+                .map { it.toInt() }
+                .forEach { profile ->
+                    // Reset dolby first to prevent it from loading bad settings
+                    dolbyEffect.resetProfileSpecificSettings(profile)
+                    // Now restore our profile-specific settings
+                    restoreSettings(profile)
+                }
 
         // Finally restore the current profile.
         setCurrentProfile()
+
+        dlog(TAG, "initialized")
+    }
+
+    fun onBootCompleted () {
+        dlog(TAG, "onBootCompleted()")
+
+        // Migrate presets from credential protected storage if needed
+        maybeMigratePresets()
     }
 
     private fun restoreSettings(profile: Int) {
@@ -121,6 +128,20 @@ internal class DolbyController private constructor(
             prefs.getString(DolbyConstants.PREF_PRESET, getPreset(profile))!!,
             profile
         )
+        setBassEnhancerEnabled(
+            prefs.getBoolean(DolbyConstants.PREF_BASS, getBassEnhancerEnabled(profile)),
+            profile
+        )
+        setVolumeLevelerEnabled(
+            // force disable if unsupported, else force enable on dynamic profile
+            volumeLevelerSupported && (profile == 0 ||
+                prefs.getBoolean(DolbyConstants.PREF_VOLUME, getVolumeLevelerEnabled(profile))),
+            profile
+        )
+        if (profile == 0) {
+            // below settings are not applicable for dynamic
+            return
+        }
         setIeqPreset(
             prefs.getString(
                 DolbyConstants.PREF_IEQ,
@@ -137,27 +158,45 @@ internal class DolbyController private constructor(
             profile
         )
         setStereoWideningAmount(
-            prefs.getString(
-                DolbyConstants.PREF_STEREO,
-                getStereoWideningAmount(profile).toString()
+            prefs.getInt(
+                DolbyConstants.PREF_STEREO_WIDENING,
+                getStereoWideningAmount(profile)
             )!!.toInt(),
+            profile
+        )
+        setDialogueEnhancerEnabled(
+            prefs.getBoolean(
+                DolbyConstants.PREF_DIALOGUE,
+                getDialogueEnhancerEnabled(profile)
+            ),
             profile
         )
         setDialogueEnhancerAmount(
-            prefs.getString(
-                DolbyConstants.PREF_DIALOGUE,
-                getDialogueEnhancerAmount(profile).toString()
+            prefs.getInt(
+                DolbyConstants.PREF_DIALOGUE_AMOUNT,
+                getDialogueEnhancerAmount(profile)
             )!!.toInt(),
             profile
         )
-        setBassEnhancerEnabled(
-            prefs.getBoolean(DolbyConstants.PREF_BASS, getBassEnhancerEnabled(profile)),
-            profile
-        )
-        setVolumeLevelerEnabled(
-            prefs.getBoolean(DolbyConstants.PREF_VOLUME, getVolumeLevelerEnabled(profile)),
-            profile
-        )
+    }
+
+    private fun maybeMigratePresets() {
+        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+        if (prefs.getBoolean(PREF_KEY_PRESETS_MIGRATED, false)) {
+            return
+        }
+        val ceContext = context.createCredentialProtectedStorageContext()
+        val cePrefs = ceContext.getSharedPreferences(PREF_PRESETS, Context.MODE_PRIVATE)
+        if (cePrefs.all.isEmpty()) {
+            dlog(TAG, "no presets to migrate")
+            return
+        }
+        if (context.moveSharedPreferencesFrom(ceContext, PREF_PRESETS)) {
+            prefs.edit().putBoolean(PREF_KEY_PRESETS_MIGRATED, true).apply()
+            dlog(TAG, "presets migrated successfully")
+        } else {
+            Log.w(TAG, "failed to migrate presets")
+        }
     }
 
     private fun checkEffect() {
@@ -191,11 +230,25 @@ internal class DolbyController private constructor(
         )[profileIndex]
     }
 
-    fun resetProfileSpecificSettings() {
-        dlog(TAG, "resetProfileSpecificSettings")
+    fun resetProfileSpecificSettings(profile: Int = this.profile) {
+        dlog(TAG, "resetProfileSpecificSettings($profile)")
         checkEffect()
-        dolbyEffect.resetProfileSpecificSettings()
+        dolbyEffect.resetProfileSpecificSettings(profile)
         context.deleteSharedPreferences("profile_$profile")
+    }
+
+    fun resetAllProfiles() {
+        dlog(TAG, "resetAllProfiles")
+        checkEffect()
+        // Reset profile-specific settings
+        context.resources.getStringArray(R.array.dolby_profile_values)
+            .map { it.toInt() }
+            .forEach { resetProfileSpecificSettings(it) }
+        // Set default dynamic profile
+        profile = 0
+        PreferenceManager.getDefaultSharedPreferences(context).edit()
+            .putString(DolbyConstants.PREF_PROFILE, "0")
+            .apply()
     }
 
     fun getPreset(profile: Int = this.profile): String {
@@ -209,20 +262,20 @@ internal class DolbyController private constructor(
         dlog(TAG, "setPreset: $value")
         checkEffect()
         val gains = value.split(",")
-            .map { it.toInt() }
-            .toIntArray()
+                .map { it.toInt() }
+                .toIntArray()
         dolbyEffect.setDapParameter(DsParam.GEQ_BAND_GAINS, gains, profile)
     }
 
     fun getPresetName(): String {
+        val preset = getPreset()
         val presets = context.resources.getStringArray(R.array.dolby_preset_values)
-        val presetIndex = presets.indexOf(getPreset())
-        return if (presetIndex == -1) {
-            "Custom"
+        val userPresets = context.getSharedPreferences(PREF_PRESETS, Context.MODE_PRIVATE)
+        return if (presets.contains(preset)) {
+            context.resources.getStringArray(R.array.dolby_preset_entries)[presets.indexOf(preset)]
         } else {
-            context.resources.getStringArray(
-                R.array.dolby_preset_entries
-            )[presetIndex]
+            userPresets.all.entries.firstOrNull { it.value == preset }?.key
+                ?: context.getString(R.string.dolby_preset_custom)
         }
     }
 
@@ -271,29 +324,40 @@ internal class DolbyController private constructor(
     }
 
     fun getStereoWideningAmount(profile: Int = this.profile) =
-        dolbyEffect.getDapParameterInt(DsParam.STEREO_WIDENING_AMOUNT, profile).also {
-            dlog(TAG, "getStereoWideningAmount: $it")
+        if (!stereoWideningSupported) {
+            0
+        } else {
+            dolbyEffect.getDapParameterInt(DsParam.STEREO_WIDENING_AMOUNT, profile).also {
+                dlog(TAG, "getStereoWideningAmount: $it")
+            }
         }
 
     fun setStereoWideningAmount(value: Int, profile: Int = this.profile) {
+        if (!stereoWideningSupported) return
         dlog(TAG, "setStereoWideningAmount: $value")
         checkEffect()
         dolbyEffect.setDapParameter(DsParam.STEREO_WIDENING_AMOUNT, value, profile)
     }
 
-    fun getDialogueEnhancerAmount(profile: Int = this.profile): Int {
-        val enabled = dolbyEffect.getDapParameterBool(DsParam.DIALOGUE_ENHANCER_ENABLE, profile)
-        val amount = if (enabled) {
-            dolbyEffect.getDapParameterInt(DsParam.DIALOGUE_ENHANCER_AMOUNT, profile)
-        } else 0
-        dlog(TAG, "getDialogueEnhancerAmount: enabled=$enabled amount=$amount")
-        return amount
+    fun getDialogueEnhancerEnabled(profile: Int = this.profile) =
+        dolbyEffect.getDapParameterBool(DsParam.DIALOGUE_ENHANCER_ENABLE, profile).also {
+            dlog(TAG, "getDialogueEnhancerEnabled: $it")
+        }
+
+    fun setDialogueEnhancerEnabled(value: Boolean, profile: Int = this.profile) {
+        dlog(TAG, "setDialogueEnhancerEnabled: $value")
+        checkEffect()
+        dolbyEffect.setDapParameter(DsParam.DIALOGUE_ENHANCER_ENABLE, value, profile)
     }
+
+    fun getDialogueEnhancerAmount(profile: Int = this.profile) =
+        dolbyEffect.getDapParameterInt(DsParam.DIALOGUE_ENHANCER_AMOUNT, profile).also {
+            dlog(TAG, "getDialogueEnhancerAmount: $it")
+        }
 
     fun setDialogueEnhancerAmount(value: Int, profile: Int = this.profile) {
         dlog(TAG, "setDialogueEnhancerAmount: $value")
         checkEffect()
-        dolbyEffect.setDapParameter(DsParam.DIALOGUE_ENHANCER_ENABLE, (value > 0), profile)
         dolbyEffect.setDapParameter(DsParam.DIALOGUE_ENHANCER_AMOUNT, value, profile)
     }
 
@@ -311,6 +375,8 @@ internal class DolbyController private constructor(
     companion object {
         private const val TAG = "DolbyController"
         private const val EFFECT_PRIORITY = 100
+        private const val PREF_PRESETS = "presets"
+        private const val PREF_KEY_PRESETS_MIGRATED = "presets_migrated"
 
         @Volatile
         private var instance: DolbyController? = null

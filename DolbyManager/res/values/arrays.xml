@@ -8,8 +8,9 @@
     <!-- Dolby Atmos -->
     <string-array name="dolby_profile_entries">
         <item>@string/dolby_profile_dynamic</item>
-        <item>@string/dolby_profile_movie</item>
+        <item>@string/dolby_profile_video</item>
         <item>@string/dolby_profile_music</item>
+        <item>@string/dolby_profile_voice</item>
         <item>@string/dolby_profile_custom</item>
     </string-array>
 
@@ -17,6 +18,7 @@
         <item>0</item>
         <item>1</item>
         <item>2</item>
+        <item>8</item>
         <item>3</item>
     </string-array>
 
@@ -55,37 +57,11 @@
         <item>40,24,8,8,8,-4,-16,-12,-8,-32,-56,-24,8,8,8,8,8,8,8,8</item>
     </string-array>
 
-    <string-array name="dolby_dialogue_entries">
-        <item>@string/dolby_off</item>
-        <item>@string/dolby_low</item>
-        <item>@string/dolby_medium</item>
-        <item>@string/dolby_high</item>
-        <item>@string/dolby_max</item>
-    </string-array>
-
-    <string-array name="dolby_dialogue_values">
-        <item>0</item>
-        <item>2</item>
-        <item>6</item>
-        <item>9</item>
-        <item>12</item>
-    </string-array>
-
-    <string-array name="dolby_stereo_entries">
-        <item>@string/dolby_low</item>
-        <item>@string/dolby_high</item>
-    </string-array>
-
-    <string-array name="dolby_stereo_values">
-        <item>4</item>
-        <item>40</item>
-    </string-array>
-
     <string-array name="dolby_ieq_entries">
         <item>@string/dolby_off</item>
+        <item>@string/dolby_detailed</item>
         <item>@string/dolby_balanced</item>
         <item>@string/dolby_warm</item>
-        <item>@string/dolby_detailed</item>
     </string-array>
 
     <string-array name="dolby_ieq_values">
