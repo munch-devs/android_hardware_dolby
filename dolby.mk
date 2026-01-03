@@ -38,9 +38,9 @@ PRODUCT_VENDOR_PROPERTIES += \
     vendor.audio.dolby.ds2.enabled=false \
     vendor.audio.dolby.ds2.hardbypass=false
 
-# DolbyManager
+# LunarisDolby
 PRODUCT_PACKAGES += \
-    DolbyManager
+    LunarisDolby
 
 # HIDL
 DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE += $(DOLBY_PATH)/configs/vintf/dolby_framework_matrix.xml
