@@ -6,9 +6,9 @@ PRODUCT_COPY_FILES += \
     $(DOLBY_PATH)/configs/dax/dax-default.xml:$(TARGET_COPY_OUT_VENDOR)/etc/dolby/dax-default.xml \
     $(DOLBY_PATH)/configs/media/media_codecs_dolby_audio.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_dolby_audio.xml
 
-# DolbyManager
+# LunarisDolby
 PRODUCT_PACKAGES += \
-    DolbyManager
+    LunarisDolby
 
 # Dolby Props
 PRODUCT_VENDOR_PROPERTIES += \
