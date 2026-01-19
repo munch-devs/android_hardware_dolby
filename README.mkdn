@@ -1,0 +1,43 @@
+Xiaomi Dolby
+==============
+
+Getting Started
+---------------
+For dolby media codecs to work add this line in your media codecs config (should be in vendor partition) and make sure your device supports c2 codecs. :-
+
+```bash
+<Include href="media_codecs_dolby_audio.xml" />
+```
+
+To build, add the dolby effects in your device's audio effects config then inherit the dolby config by adding this in your device's makefile :-
+
+```bash
+$(call inherit-product, hardware/dolby/dolby.mk)
+```
+
+Now, moving hidl definitions in manifest to device trees is completely absurd so stop overriding manifest in your device trees an example for such would be :-
+
+Changing these in BoardConfig makefile of your device tree:-
+
+```bash
+DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE :=
+```
+And
+
+```bash
+DEVICE_MANIFEST_FILE :=
+```
+
+To:-
+
+```bash
+DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE +=
+```
+And
+
+```bash
+DEVICE_MANIFEST_FILE +=
+```
+
+The only change done above is changing := symbol to += so that manifest can't be overriden from device tree in BoardConfig makefile.
+
