@@ -11,6 +11,7 @@ import androidx.lifecycle.viewModelScope
 import com.aosp.dolby.DolbyConstants
 import com.aosp.dolby.data.DolbyRepository
 import com.aosp.dolby.domain.models.*
+import com.aosp.dolby.service.DolbyEffectService
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -114,6 +115,11 @@ class DolbyViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             try {
                 repository.setDolbyEnabled(enabled)
+                if (enabled) {
+                    DolbyEffectService.start(getApplication())
+                } else {
+                    DolbyEffectService.stop(getApplication())
+                }
                 loadSettings()
             } catch (e: Exception) {
                 DolbyConstants.dlog(TAG, "Error setting Dolby enabled: ${e.message}")
