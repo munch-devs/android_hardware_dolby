@@ -6,6 +6,7 @@
 package org.lunaris.dolby.audio
 
 import android.media.audiofx.AudioEffect
+import android.util.Log
 import org.lunaris.dolby.DolbyConstants
 import org.lunaris.dolby.DolbyConstants.DsParam
 import java.util.UUID
@@ -18,7 +19,11 @@ class DolbyAudioEffect(priority: Int, audioSession: Int) : AudioEffect(
         get() = getIntParam(EFFECT_PARAM_ENABLE) == 1
         set(value) {
             setIntParam(EFFECT_PARAM_ENABLE, if (value) 1 else 0)
-            enabled = value
+            try {
+                enabled = value
+            } catch (e: Exception) {
+                Log.w(TAG, "Failed to set enabled state: ${e.message}")
+            }
         }
 
     var profile: Int
@@ -28,20 +33,31 @@ class DolbyAudioEffect(priority: Int, audioSession: Int) : AudioEffect(
         }
 
     private fun setIntParam(param: Int, value: Int) {
-        DolbyConstants.dlog(TAG, "setIntParam($param, $value)")
-        val buf = ByteArray(12)
-        int32ToByteArray(param, buf, 0)
-        int32ToByteArray(1, buf, 4)
-        int32ToByteArray(value, buf, 8)
-        checkStatus(setParameter(EFFECT_PARAM_CPDP_VALUES, buf))
+        try {
+            DolbyConstants.dlog(TAG, "setIntParam($param, $value)")
+            val buf = ByteArray(12)
+            int32ToByteArray(param, buf, 0)
+            int32ToByteArray(1, buf, 4)
+            int32ToByteArray(value, buf, 8)
+            checkStatus(setParameter(EFFECT_PARAM_CPDP_VALUES, buf))
+        } catch (e: UnsupportedOperationException) {
+            Log.w(TAG, "AudioEffect parameter operation unsupported: ${e.message}")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error setting int param", e)
+        }
     }
 
     private fun getIntParam(param: Int): Int {
-        val buf = ByteArray(12)
-        int32ToByteArray(param, buf, 0)
-        checkStatus(getParameter(EFFECT_PARAM_CPDP_VALUES + param, buf))
-        return byteArrayToInt32(buf).also {
-            DolbyConstants.dlog(TAG, "getIntParam($param): $it")
+        return try {
+            val buf = ByteArray(12)
+            int32ToByteArray(param, buf, 0)
+            checkStatus(getParameter(EFFECT_PARAM_CPDP_VALUES + param, buf))
+            byteArrayToInt32(buf).also {
+                DolbyConstants.dlog(TAG, "getIntParam($param): $it")
+            }
+        } catch (e: Exception) {
+            Log.w(TAG, "Failed to get int param: ${e.message}")
+            -1
         }
     }
 
@@ -51,15 +67,19 @@ class DolbyAudioEffect(priority: Int, audioSession: Int) : AudioEffect(
     }
 
     fun setDapParameter(param: DsParam, values: IntArray, profile: Int = this.profile) {
-        DolbyConstants.dlog(TAG, "setDapParameter: profile=$profile param=$param")
-        val length = values.size
-        val buf = ByteArray((length + 4) * 4)
-        int32ToByteArray(EFFECT_PARAM_SET_PROFILE_PARAMETER, buf, 0)
-        int32ToByteArray(length + 1, buf, 4)
-        int32ToByteArray(profile, buf, 8)
-        int32ToByteArray(param.id, buf, 12)
-        int32ArrayToByteArray(values, buf, 16)
-        checkStatus(setParameter(EFFECT_PARAM_CPDP_VALUES, buf))
+        try {
+            DolbyConstants.dlog(TAG, "setDapParameter: profile=$profile param=$param")
+            val length = values.size
+            val buf = ByteArray((length + 4) * 4)
+            int32ToByteArray(EFFECT_PARAM_SET_PROFILE_PARAMETER, buf, 0)
+            int32ToByteArray(length + 1, buf, 4)
+            int32ToByteArray(profile, buf, 8)
+            int32ToByteArray(param.id, buf, 12)
+            int32ArrayToByteArray(values, buf, 16)
+            checkStatus(setParameter(EFFECT_PARAM_CPDP_VALUES, buf))
+        } catch (e: Exception) {
+            Log.w(TAG, "Failed to set DAP parameter: ${e.message}")
+        }
     }
 
     fun setDapParameter(param: DsParam, enable: Boolean, profile: Int = this.profile) =
@@ -69,12 +89,17 @@ class DolbyAudioEffect(priority: Int, audioSession: Int) : AudioEffect(
         setDapParameter(param, intArrayOf(value), profile)
 
     fun getDapParameter(param: DsParam, profile: Int = this.profile): IntArray {
-        DolbyConstants.dlog(TAG, "getDapParameter: profile=$profile param=$param")
-        val length = param.length
-        val buf = ByteArray((length + 2) * 4)
-        val p = (param.id shl 16) + (profile shl 8) + EFFECT_PARAM_GET_PROFILE_PARAMETER
-        checkStatus(getParameter(p, buf))
-        return byteArrayToInt32Array(buf, length)
+        return try {
+            DolbyConstants.dlog(TAG, "getDapParameter: profile=$profile param=$param")
+            val length = param.length
+            val buf = ByteArray((length + 2) * 4)
+            val p = (param.id shl 16) + (profile shl 8) + EFFECT_PARAM_GET_PROFILE_PARAMETER
+            checkStatus(getParameter(p, buf))
+            byteArrayToInt32Array(buf, length)
+        } catch (e: Exception) {
+            Log.w(TAG, "Failed to get DAP parameter: ${e.message}")
+            IntArray(param.length) { 0 }
+        }
     }
 
     fun getDapParameterBool(param: DsParam, profile: Int = this.profile): Boolean =
