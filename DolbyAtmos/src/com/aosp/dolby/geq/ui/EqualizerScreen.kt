@@ -1,16 +1,14 @@
 package com.aosp.dolby.geq.ui
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import com.android.settingslib.spa.framework.theme.SettingsDimension
 import com.android.settingslib.spa.framework.theme.SettingsTheme
 
 @Composable
@@ -20,18 +18,54 @@ fun EqualizerScreen(
 ) {
     SettingsTheme {
         Surface(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(SettingsDimension.itemPadding)
-                .then(modifier),
+            modifier = modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
             Column(
-                verticalArrangement = Arrangement.Top,
-                modifier = Modifier.fillMaxHeight()
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(24.dp)
             ) {
-                PresetSelector(viewModel = viewModel)
-                EqualizerBands(viewModel = viewModel)
+                // Khu vực chọn Preset được bo góc mềm mại và nổi khối
+                ElevatedCard(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(24.dp),
+                    colors = CardDefaults.elevatedCardColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceContainerLow
+                    ),
+                    elevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp)
+                ) {
+                    Box(modifier = Modifier.padding(16.dp)) {
+                        PresetSelector(viewModel = viewModel)
+                    }
+                }
+
+                // Khu vực các thanh trượt EQ
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                    shape = RoundedCornerShape(24.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceContainer
+                    )
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(vertical = 24.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            text = "Graphic Equalizer",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.padding(bottom = 16.dp)
+                        )
+                        EqualizerBands(viewModel = viewModel)
+                    }
+                }
             }
         }
     }

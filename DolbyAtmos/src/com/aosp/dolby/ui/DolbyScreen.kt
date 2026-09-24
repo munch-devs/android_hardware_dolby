@@ -9,8 +9,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,6 +18,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.toggleable
@@ -28,7 +29,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FilledTonalButton
-import androidx.compose.material3.FilterChip
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -37,16 +37,19 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
@@ -56,8 +59,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.lerp
 import com.aosp.dolby.R
 import com.aosp.dolby.geq.EqualizerActivity
+import kotlinx.coroutines.launch
+import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 
 private data class Option(val value: Int, val label: String)
@@ -71,7 +77,6 @@ private fun options(entriesRes: Int, valuesRes: Int): List<Option> {
 
 private const val DISABLED_ALPHA = 0.38f
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun DolbyScreen(
     viewModel: DolbyViewModel,
@@ -111,26 +116,15 @@ fun DolbyScreen(
             onCheckedChange = viewModel::setDsOn
         )
 
-        // ── Profile ──────────────────────────────────────────────────────────
+        // ── Profile (Slide Card Carousel) ────────────────────────────────────
         SectionTitle(stringResource(R.string.dolby_profile_title))
         SectionCard {
-            FlowRow(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .alpha(if (state.dsOn) 1f else DISABLED_ALPHA)
-                    .padding(16.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                profiles.forEach { option ->
-                    FilterChip(
-                        selected = state.profile == option.value,
-                        onClick = { viewModel.setProfile(option.value) },
-                        enabled = state.dsOn,
-                        label = { Text(option.label) }
-                    )
-                }
-            }
+            ProfileSelectorCarousel(
+                profiles = profiles,
+                currentProfile = state.profile,
+                enabled = state.dsOn,
+                onProfileSelect = viewModel::setProfile
+            )
         }
 
         // ── Equalizers ───────────────────────────────────────────────────────
@@ -233,6 +227,102 @@ fun DolbyScreen(
 // ─────────────────────────────────────────────────────────────────────────────
 // Building blocks
 // ─────────────────────────────────────────────────────────────────────────────
+
+@Composable
+private fun ProfileSelectorCarousel(
+    profiles: List<Option>,
+    currentProfile: Int,
+    enabled: Boolean,
+    onProfileSelect: (Int) -> Unit
+) {
+    val coroutineScope = rememberCoroutineScope()
+    
+    // Tìm vị trí ban đầu
+    val initialPage = remember(profiles, currentProfile) {
+        profiles.indexOfFirst { it.value == currentProfile }.coerceAtLeast(0)
+    }
+
+    val pagerState = rememberPagerState(
+        initialPage = initialPage,
+        pageCount = { profiles.size }
+    )
+
+    // Đồng bộ vuốt (swipe) sang ViewModel
+    LaunchedEffect(pagerState.currentPage) {
+        val selectedProfile = profiles[pagerState.currentPage].value
+        if (enabled && selectedProfile != currentProfile) {
+            onProfileSelect(selectedProfile)
+        }
+    }
+
+    // Đồng bộ từ ViewModel sang Pager (khi đổi profile từ bên ngoài)
+    LaunchedEffect(currentProfile) {
+        val index = profiles.indexOfFirst { it.value == currentProfile }
+        if (index >= 0 && index != pagerState.currentPage) {
+            pagerState.animateScrollToPage(index)
+        }
+    }
+
+    HorizontalPager(
+        state = pagerState,
+        contentPadding = PaddingValues(horizontal = 80.dp),
+        userScrollEnabled = enabled,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 16.dp)
+            .alpha(if (enabled) 1f else DISABLED_ALPHA)
+    ) { page ->
+        val option = profiles[page]
+        val pageOffset = ((pagerState.currentPage - page) + pagerState.currentPageOffsetFraction).absoluteValue
+        
+        // Hiệu ứng scale và alpha
+        val scale = lerp(start = 0.85f, stop = 1f, fraction = 1f - pageOffset.coerceIn(0f, 1f))
+        val alpha = lerp(start = 0.5f, stop = 1f, fraction = 1f - pageOffset.coerceIn(0f, 1f))
+
+        Card(
+            shape = RoundedCornerShape(24.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = if (pageOffset < 0.5f) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceVariant,
+                contentColor = if (pageOffset < 0.5f) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
+            ),
+            elevation = CardDefaults.cardElevation(
+                defaultElevation = if (pageOffset < 0.5f) 6.dp else 0.dp
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(90.dp)
+                .graphicsLayer {
+                    scaleX = scale
+                    scaleY = scale
+                    this.alpha = alpha
+                }
+                // Cho phép chạm vào thẻ hai bên để cuộn tới thẻ đó
+                .clickable(
+                    enabled = enabled && page != pagerState.currentPage,
+                    onClick = {
+                        coroutineScope.launch {
+                            pagerState.animateScrollToPage(page)
+                        }
+                    }
+                )
+        ) {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp)
+            ) {
+                Text(
+                    text = option.label,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = if (pageOffset < 0.5f) FontWeight.Bold else FontWeight.Medium,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+        }
+    }
+}
 
 @Composable
 private fun HeroCard(
@@ -402,7 +492,6 @@ private fun SwitchRow(
     }
 }
 
-/** Discrete slider: dragging snaps between the named levels (Off / Low / Medium ...). */
 @Composable
 private fun LevelSetting(
     title: String,
@@ -466,7 +555,6 @@ private fun LevelSetting(
     }
 }
 
-/** Intelligent equalizer: row of icon tiles instead of a plain list dialog. */
 @Composable
 private fun IeqSelector(
     options: List<Option>,
