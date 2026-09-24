@@ -6,15 +6,15 @@ soong_namespace {
 }
 
 cc_prebuilt_library_shared {
-    name: "libdapparamstorage",
-    owner: "xiaomi",
+    name: "libdapparamstorage_v3_6",
+    owner: "oneplus",
     strip: {
         none: true,
     },
     target: {
         android_arm: {
             srcs: [
-                "proprietary/vendor/lib/libdapparamstorage.so",
+                "proprietary/odm/lib/libdapparamstorage_v3_6.so",
             ],
             shared_libs: [
                 "libcutils",
@@ -28,7 +28,7 @@ cc_prebuilt_library_shared {
         },
         android_arm64: {
             srcs: [
-                "proprietary/vendor/lib64/libdapparamstorage.so",
+                "proprietary/odm/lib64/libdapparamstorage_v3_6.so",
             ],
             shared_libs: [
                 "libcutils",
@@ -43,26 +43,26 @@ cc_prebuilt_library_shared {
     },
     compile_multilib: "both",
     prefer: true,
-    soc_specific: true,
+    device_specific: true,
 }
 
 cc_prebuilt_library_shared {
-    name: "libdlbpreg",
-    owner: "xiaomi",
+    name: "libdeccfg_v3_6",
+    owner: "oneplus",
     strip: {
         none: true,
     },
     target: {
         android_arm: {
             srcs: [
-                "proprietary/vendor/lib/libdlbpreg.so",
+                "proprietary/odm/lib/libdeccfg_v3_6.so",
             ],
             shared_libs: [
-                "liblog",
-                "libutils",
+                "libhidlbase",
+                "vendor.dolby_v3_6.hardware.dms360@2.0",
                 "libcutils",
-                "libaudioutils",
-                "libstagefright_foundation-v33",
+                "libutils",
+                "liblog",
                 "libc++",
                 "libc",
                 "libm",
@@ -71,14 +71,14 @@ cc_prebuilt_library_shared {
         },
         android_arm64: {
             srcs: [
-                "proprietary/vendor/lib64/libdlbpreg.so",
+                "proprietary/odm/lib64/libdeccfg_v3_6.so",
             ],
             shared_libs: [
-                "liblog",
-                "libutils",
+                "libhidlbase",
+                "vendor.dolby_v3_6.hardware.dms360@2.0",
                 "libcutils",
-                "libaudioutils",
-                "libstagefright_foundation-v33",
+                "libutils",
+                "liblog",
                 "libc++",
                 "libc",
                 "libm",
@@ -88,28 +88,29 @@ cc_prebuilt_library_shared {
     },
     compile_multilib: "both",
     prefer: true,
-    soc_specific: true,
+    device_specific: true,
 }
 
 cc_prebuilt_library_shared {
-    name: "libdlbvol",
-    owner: "xiaomi",
+    name: "libdlbdsservice_v3_6",
+    owner: "oneplus",
     strip: {
         none: true,
     },
     target: {
         android_arm: {
             srcs: [
-                "proprietary/vendor/lib/soundfx/libdlbvol.so",
+                "proprietary/odm/lib/libdlbdsservice_v3_6.so",
             ],
             shared_libs: [
-                "liblog",
                 "libutils",
-                "libcutils",
-                "libaudioutils",
                 "libstagefright_foundation-v33",
-                "libdlbpreg",
-                "vendor.dolby.hardware.dms@2.0",
+                "liblog",
+                "libxml2",
+                "libdapparamstorage_v3_6",
+                "libsqlite",
+                "libhidlbase",
+                "vendor.dolby_v3_6.hardware.dms360@2.0",
                 "libc++",
                 "libc",
                 "libm",
@@ -118,16 +119,17 @@ cc_prebuilt_library_shared {
         },
         android_arm64: {
             srcs: [
-                "proprietary/vendor/lib64/soundfx/libdlbvol.so",
+                "proprietary/odm/lib64/libdlbdsservice_v3_6.so",
             ],
             shared_libs: [
-                "liblog",
                 "libutils",
-                "libcutils",
-                "libaudioutils",
                 "libstagefright_foundation-v33",
-                "libdlbpreg",
-                "vendor.dolby.hardware.dms@2.0",
+                "liblog",
+                "libxml2",
+                "libdapparamstorage_v3_6",
+                "libsqlite",
+                "libhidlbase",
+                "vendor.dolby_v3_6.hardware.dms360@2.0",
                 "libc++",
                 "libc",
                 "libm",
@@ -136,52 +138,251 @@ cc_prebuilt_library_shared {
         },
     },
     compile_multilib: "both",
+    prefer: true,
+    device_specific: true,
+}
+
+cc_prebuilt_library_shared {
+    name: "vendor.dolby_v3_6.hardware.dms360@2.0",
+    owner: "oneplus",
+    strip: {
+        none: true,
+    },
+    target: {
+        android_arm: {
+            srcs: [
+                "proprietary/odm/lib/vendor.dolby_v3_6.hardware.dms360@2.0.so",
+            ],
+            shared_libs: [
+                "libhidlbase",
+                "liblog",
+                "libutils",
+                "libcutils",
+                "libc++",
+                "libc",
+                "libm",
+                "libdl",
+            ],
+        },
+        android_arm64: {
+            srcs: [
+                "proprietary/odm/lib64/vendor.dolby_v3_6.hardware.dms360@2.0.so",
+            ],
+            shared_libs: [
+                "libhidlbase",
+                "liblog",
+                "libutils",
+                "libcutils",
+                "libc++",
+                "libc",
+                "libm",
+                "libdl",
+            ],
+        },
+    },
+    compile_multilib: "both",
+    prefer: true,
+    device_specific: true,
+}
+
+cc_prebuilt_library_shared {
+    name: "libstagefright_soft_ddpdec",
+    owner: "oneplus",
+    strip: {
+        none: true,
+    },
+    target: {
+        android_arm: {
+            srcs: [
+                "proprietary/odm/lib/libstagefright_soft_ddpdec.so",
+            ],
+            shared_libs: [
+                "libhidlbase",
+                "vendor.dolby_v3_6.hardware.dms360@2.0",
+                "libdeccfg_v3_6",
+                "libstagefright_omx",
+                "libstagefright_softomx",
+                "libstagefright_foundation-v33",
+                "libutils",
+                "libcutils",
+                "libmedia_omx",
+                "liblog",
+                "libc++",
+                "libc",
+                "libm",
+                "libdl",
+            ],
+        },
+    },
+    compile_multilib: "32",
+    prefer: true,
+    device_specific: true,
+}
+
+cc_prebuilt_library_shared {
+    name: "libhwdap_v3_6",
+    owner: "oneplus",
+    strip: {
+        none: true,
+    },
+    target: {
+        android_arm: {
+            srcs: [
+                "proprietary/odm/lib/soundfx/libhwdap_v3_6.so",
+            ],
+            shared_libs: [
+                "liblog",
+                "libutils",
+                "libcutils",
+                "libaudioutils",
+                "libdapparamstorage_v3_6",
+                "libhidlbase",
+                "vendor.dolby_v3_6.hardware.dms360@2.0",
+                "libc++",
+                "libc",
+                "libm",
+                "libdl",
+            ],
+        },
+    },
+    compile_multilib: "32",
     relative_install_path: "soundfx",
     prefer: true,
-    soc_specific: true,
+    device_specific: true,
 }
 
 cc_prebuilt_library_shared {
-    name: "libswdap",
-    owner: "xiaomi",
+    name: "libswdap_v3_6",
+    owner: "oneplus",
     strip: {
         none: true,
     },
     target: {
         android_arm: {
             srcs: [
-                "proprietary/vendor/lib/soundfx/libswdap.so",
+                "proprietary/odm/lib/soundfx/libswdap_v3_6.so",
             ],
             shared_libs: [
                 "liblog",
                 "libutils",
                 "libcutils",
                 "libaudioutils",
-                "libdapparamstorage",
+                "libdapparamstorage_v3_6",
                 "libhidlbase",
+                "vendor.dolby_v3_6.hardware.dms360@2.0",
+                "libc++",
+                "libc",
+                "libm",
+                "libdl",
+            ],
+        },
+    },
+    compile_multilib: "32",
+    relative_install_path: "soundfx",
+    prefer: true,
+    device_specific: true,
+}
+
+cc_prebuilt_library_shared {
+    name: "libcodec2_hidl@1.0_sp",
+    owner: "oneplus",
+    strip: {
+        none: true,
+    },
+    target: {
+        android_arm64: {
+            srcs: [
+                "proprietary/odm/lib64/libcodec2_hidl@1.0_sp.so",
+            ],
+            shared_libs: [
+                "dolbycodec_shim",
+                "libbase_WriteStringToFd_shim",
+                "android.hardware.graphics.bufferqueue@1.0",
+                "android.hardware.graphics.bufferqueue@2.0",
+                "android.hardware.graphics.common@1.0",
+                "android.hardware.media@1.0",
+                "android.hardware.media.bufferpool@2.0",
+                "android.hardware.media.c2@1.0",
+                "android.hardware.media.omx@1.0",
+                "libbase",
+                "libcodec2",
+                "libcodec2_vndk_sp",
+                "libcutils",
+                "libhidlbase",
+                "liblog",
+                "libstagefright_bufferpool@2.0.1",
+                "libui",
+                "libutils",
+                "libstagefright_bufferqueue_helper",
+                "libcodec2_hidl_plugin_sp",
+                "libc++",
+                "libc",
+                "libm",
+                "libdl",
+            ],
+        },
+    },
+    compile_multilib: "64",
+    prefer: true,
+    device_specific: true,
+}
+
+cc_prebuilt_library_shared {
+    name: "libcodec2_hidl_plugin_sp",
+    owner: "oneplus",
+    strip: {
+        none: true,
+    },
+    target: {
+        android_arm64: {
+            srcs: [
+                "proprietary/odm/lib64/libcodec2_hidl_plugin_sp.so",
+            ],
+            shared_libs: [
+                "libbase",
+                "libcodec2",
+                "libcodec2_vndk_sp",
+                "liblog",
+                "libutils",
+                "libcutils",
                 "libstagefright_foundation-v33",
-                "libdlbpreg",
-                "vendor.dolby.hardware.dms@2.0",
                 "libc++",
                 "libc",
                 "libm",
                 "libdl",
             ],
         },
+    },
+    compile_multilib: "64",
+    prefer: true,
+    device_specific: true,
+}
+
+cc_prebuilt_library_shared {
+    name: "libcodec2_soft_ac4dec_sp",
+    owner: "oneplus",
+    strip: {
+        none: true,
+    },
+    target: {
         android_arm64: {
             srcs: [
-                "proprietary/vendor/lib64/soundfx/libswdap.so",
+                "proprietary/odm/lib64/libcodec2_soft_ac4dec_sp.so",
             ],
             shared_libs: [
-                "liblog",
-                "libutils",
-                "libcutils",
-                "libaudioutils",
-                "libdapparamstorage",
                 "libhidlbase",
+                "vendor.dolby_sp.hardware.dmssp@2.0",
+                "libdeccfg_sp",
+                "libbase",
+                "liblog",
+                "libcodec2",
+                "libcodec2_vndk_sp",
+                "libutils",
+                "libcodec2_store_dolby_sp",
+                "libcodec2_soft_common_sp",
+                "libsfplugin_ccodec_utils",
                 "libstagefright_foundation-v33",
-                "libdlbpreg",
-                "vendor.dolby.hardware.dms@2.0",
+                "libcutils",
                 "libc++",
                 "libc",
                 "libm",
@@ -189,179 +390,67 @@ cc_prebuilt_library_shared {
             ],
         },
     },
-    compile_multilib: "both",
-    relative_install_path: "soundfx",
+    compile_multilib: "64",
     prefer: true,
-    soc_specific: true,
+    device_specific: true,
 }
 
 cc_prebuilt_library_shared {
-    name: "libswgamedap",
-    owner: "xiaomi",
-    strip: {
-        none: true,
-    },
-    target: {
-        android_arm: {
-            srcs: [
-                "proprietary/vendor/lib/soundfx/libswgamedap.so",
-            ],
-            shared_libs: [
-                "liblog",
-                "libutils",
-                "libcutils",
-                "libaudioutils",
-                "libdapparamstorage",
-                "libhidlbase",
-                "vendor.dolby.hardware.dms@2.0",
-                "libc++",
-                "libc",
-                "libm",
-                "libdl",
-            ],
-        },
-        android_arm64: {
-            srcs: [
-                "proprietary/vendor/lib64/soundfx/libswgamedap.so",
-            ],
-            shared_libs: [
-                "liblog",
-                "libutils",
-                "libcutils",
-                "libaudioutils",
-                "libdapparamstorage",
-                "libhidlbase",
-                "vendor.dolby.hardware.dms@2.0",
-                "libc++",
-                "libc",
-                "libm",
-                "libdl",
-            ],
-        },
-    },
-    compile_multilib: "both",
-    relative_install_path: "soundfx",
-    prefer: true,
-    soc_specific: true,
-}
-
-cc_prebuilt_library_shared {
-    name: "libswvqe",
-    owner: "xiaomi",
-    strip: {
-        none: true,
-    },
-    target: {
-        android_arm: {
-            srcs: [
-                "proprietary/vendor/lib/soundfx/libswvqe.so",
-            ],
-            shared_libs: [
-                "liblog",
-                "libutils",
-                "libcutils",
-                "libaudioutils",
-                "libdapparamstorage",
-                "libhidlbase",
-                "vendor.dolby.hardware.dms@2.0",
-                "libc++",
-                "libc",
-                "libm",
-                "libdl",
-            ],
-        },
-        android_arm64: {
-            srcs: [
-                "proprietary/vendor/lib64/soundfx/libswvqe.so",
-            ],
-            shared_libs: [
-                "liblog",
-                "libutils",
-                "libcutils",
-                "libaudioutils",
-                "libdapparamstorage",
-                "libhidlbase",
-                "vendor.dolby.hardware.dms@2.0",
-                "libc++",
-                "libc",
-                "libm",
-                "libdl",
-            ],
-        },
-    },
-    compile_multilib: "both",
-    relative_install_path: "soundfx",
-    prefer: true,
-    soc_specific: true,
-}
-
-cc_prebuilt_library_shared {
-    name: "vendor.dolby.hardware.dms@2.0",
-    owner: "xiaomi",
-    strip: {
-        none: true,
-    },
-    target: {
-        android_arm: {
-            srcs: [
-                "proprietary/vendor/lib/vendor.dolby.hardware.dms@2.0.so",
-            ],
-            shared_libs: [
-                "libhidlbase",
-                "liblog",
-                "libutils",
-                "libcutils",
-                "libc++",
-                "libc",
-                "libm",
-                "libdl",
-            ],
-        },
-        android_arm64: {
-            srcs: [
-                "proprietary/vendor/lib64/vendor.dolby.hardware.dms@2.0.so",
-            ],
-            shared_libs: [
-                "libhidlbase",
-                "liblog",
-                "libutils",
-                "libcutils",
-                "libc++",
-                "libc",
-                "libm",
-                "libdl",
-            ],
-        },
-    },
-    compile_multilib: "both",
-    prefer: true,
-    soc_specific: true,
-}
-
-cc_prebuilt_library_shared {
-    name: "libcodec2_soft_ac4dec",
-    owner: "xiaomi",
+    name: "libcodec2_soft_common_sp",
+    owner: "oneplus",
     strip: {
         none: true,
     },
     target: {
         android_arm64: {
             srcs: [
-                "proprietary/vendor/lib64/libcodec2_soft_ac4dec.so",
+                "proprietary/odm/lib64/libcodec2_soft_common_sp.so",
+            ],
+            shared_libs: [
+                "libbase",
+                "libcodec2",
+                "libcodec2_vndk_sp",
+                "libutils",
+                "libcutils",
+                "liblog",
+                "libsfplugin_ccodec_utils",
+                "libstagefright_foundation-v33",
+                "libc++",
+                "libc",
+                "libm",
+                "libdl",
+            ],
+        },
+    },
+    compile_multilib: "64",
+    prefer: true,
+    device_specific: true,
+}
+
+cc_prebuilt_library_shared {
+    name: "libcodec2_soft_ddpdec_sp",
+    owner: "oneplus",
+    strip: {
+        none: true,
+    },
+    target: {
+        android_arm64: {
+            srcs: [
+                "proprietary/odm/lib64/libcodec2_soft_ddpdec_sp.so",
             ],
             shared_libs: [
                 "libhidlbase",
-                "vendor.dolby.hardware.dms@2.0",
-                "libdeccfg",
+                "vendor.dolby_sp.hardware.dmssp@2.0",
+                "libdeccfg_sp",
                 "libstagefright_foundation-v33",
                 "libcutils",
                 "libbase",
                 "liblog",
                 "libcodec2",
-                "libcodec2_vndk",
+                "libcodec2_vndk_sp",
                 "libutils",
-                "libcodec2_soft_dolby",
-                "libcodec2_store_dolby",
+                "libcodec2_store_dolby_sp",
+                "libcodec2_soft_common_sp",
                 "libc++",
                 "libc",
                 "libm",
@@ -371,120 +460,121 @@ cc_prebuilt_library_shared {
     },
     compile_multilib: "64",
     prefer: true,
-    soc_specific: true,
+    device_specific: true,
 }
 
 cc_prebuilt_library_shared {
-    name: "libcodec2_soft_ddpdec",
-    owner: "xiaomi",
+    name: "libcodec2_store_dolby_sp",
+    owner: "oneplus",
     strip: {
         none: true,
     },
     target: {
         android_arm64: {
             srcs: [
-                "proprietary/vendor/lib64/libcodec2_soft_ddpdec.so",
+                "proprietary/odm/lib64/libcodec2_store_dolby_sp.so",
+            ],
+            shared_libs: [
+                "libdmabufheap",
+                "libbase",
+                "liblog",
+                "libcodec2",
+                "libcodec2_vndk_sp",
+                "libutils",
+                "libc++",
+                "libc",
+                "libm",
+                "libdl",
+            ],
+        },
+    },
+    compile_multilib: "64",
+    prefer: true,
+    device_specific: true,
+}
+
+cc_prebuilt_library_shared {
+    name: "libcodec2_vndk_sp",
+    owner: "oneplus",
+    strip: {
+        none: true,
+    },
+    target: {
+        android_arm64: {
+            srcs: [
+                "proprietary/odm/lib64/libcodec2_vndk_sp.so",
+            ],
+            shared_libs: [
+                "android.hardware.graphics.bufferqueue@2.0",
+                "android.hardware.graphics.common@1.2",
+                "android.hardware.media.bufferpool@2.0",
+                "libbase",
+                "libcutils",
+                "libdmabufheap",
+                "libfmq",
+                "libgralloctypes",
+                "libhidlbase",
+                "libion",
+                "liblog",
+                "libnativewindow",
+                "libstagefright_foundation-v33",
+                "libstagefright_bufferpool@2.0.1",
+                "libui_sp",
+                "libutils",
+                "libc++",
+                "libc",
+                "libm",
+                "libdl",
+            ],
+        },
+    },
+    compile_multilib: "64",
+    prefer: true,
+    device_specific: true,
+}
+
+cc_prebuilt_library_shared {
+    name: "libdapparamstorage_sp",
+    owner: "oneplus",
+    strip: {
+        none: true,
+    },
+    target: {
+        android_arm64: {
+            srcs: [
+                "proprietary/odm/lib64/libdapparamstorage_sp.so",
+            ],
+            shared_libs: [
+                "libcutils",
+                "libutils",
+                "liblog",
+                "libc++",
+                "libc",
+                "libm",
+                "libdl",
+            ],
+        },
+    },
+    compile_multilib: "64",
+    prefer: true,
+    device_specific: true,
+}
+
+cc_prebuilt_library_shared {
+    name: "libdeccfg_sp",
+    owner: "oneplus",
+    strip: {
+        none: true,
+    },
+    target: {
+        android_arm64: {
+            srcs: [
+                "proprietary/odm/lib64/libdeccfg_sp.so",
             ],
             shared_libs: [
                 "libhidlbase",
-                "vendor.dolby.hardware.dms@2.0",
-                "libdeccfg",
-                "libstagefright_foundation-v33",
-                "libcutils",
-                "libbase",
-                "liblog",
-                "libcodec2",
-                "libcodec2_vndk",
-                "libutils",
-                "libcodec2_soft_dolby",
-                "libcodec2_store_dolby",
-                "libc++",
-                "libc",
-                "libm",
-                "libdl",
-            ],
-        },
-    },
-    compile_multilib: "64",
-    prefer: true,
-    soc_specific: true,
-}
-
-cc_prebuilt_library_shared {
-    name: "libcodec2_soft_dolby",
-    owner: "xiaomi",
-    strip: {
-        none: true,
-    },
-    target: {
-        android_arm64: {
-            srcs: [
-                "proprietary/vendor/lib64/libcodec2_soft_dolby.so",
-            ],
-            shared_libs: [
-                "libbase",
-                "libcodec2",
-                "libcodec2_vndk",
-                "libutils",
-                "libcutils",
-                "liblog",
-                "libstagefright_foundation-v33",
-                "libc++",
-                "libc",
-                "libm",
-                "libdl",
-            ],
-        },
-    },
-    compile_multilib: "64",
-    prefer: true,
-    soc_specific: true,
-}
-
-cc_prebuilt_library_shared {
-    name: "libcodec2_store_dolby",
-    owner: "xiaomi",
-    strip: {
-        none: true,
-    },
-    target: {
-        android_arm64: {
-            srcs: [
-                "proprietary/vendor/lib64/libcodec2_store_dolby.so",
-            ],
-            shared_libs: [
-                "libbase",
-                "liblog",
-                "libcodec2",
-                "libcodec2_vndk",
-                "libutils",
-                "libc++",
-                "libc",
-                "libm",
-                "libdl",
-            ],
-        },
-    },
-    compile_multilib: "64",
-    prefer: true,
-    soc_specific: true,
-}
-
-cc_prebuilt_library_shared {
-    name: "libdeccfg",
-    owner: "xiaomi",
-    strip: {
-        none: true,
-    },
-    target: {
-        android_arm64: {
-            srcs: [
-                "proprietary/vendor/lib64/libdeccfg.so",
-            ],
-            shared_libs: [
-                "libhidlbase",
-                "vendor.dolby.hardware.dms@2.0",
-                "libdapparamstorage",
+                "vendor.dolby_sp.hardware.dmssp@2.0",
+                "libdapparamstorage_sp",
                 "libcutils",
                 "libutils",
                 "liblog",
@@ -497,19 +587,19 @@ cc_prebuilt_library_shared {
     },
     compile_multilib: "64",
     prefer: true,
-    soc_specific: true,
+    device_specific: true,
 }
 
 cc_prebuilt_library_shared {
-    name: "libdlbdsservice",
-    owner: "xiaomi",
+    name: "libdlbdsservice_sp",
+    owner: "oneplus",
     strip: {
         none: true,
     },
     target: {
         android_arm64: {
             srcs: [
-                "proprietary/vendor/lib64/libdlbdsservice.so",
+                "proprietary/odm/lib64/libdlbdsservice_sp.so",
             ],
             shared_libs: [
                 "libutils",
@@ -517,10 +607,10 @@ cc_prebuilt_library_shared {
                 "liblog",
                 "libxml2",
                 "libcrypto",
-                "libdapparamstorage",
+                "libdapparamstorage_sp",
                 "libsqlite",
                 "libhidlbase",
-                "vendor.dolby.hardware.dms@2.0",
+                "vendor.dolby_sp.hardware.dmssp@2.0",
                 "libc++",
                 "libc",
                 "libm",
@@ -530,27 +620,39 @@ cc_prebuilt_library_shared {
     },
     compile_multilib: "64",
     prefer: true,
-    soc_specific: true,
+    device_specific: true,
 }
 
 cc_prebuilt_library_shared {
-    name: "vendor.dolby.hardware.dms@2.0-impl",
-    owner: "xiaomi",
+    name: "libui_sp",
+    owner: "oneplus",
     strip: {
         none: true,
     },
     target: {
         android_arm64: {
             srcs: [
-                "proprietary/vendor/lib64/vendor.dolby.hardware.dms@2.0-impl.so",
+                "proprietary/odm/lib64/libui_sp.so",
             ],
             shared_libs: [
+                "android.hardware.graphics.allocator@2.0",
+                "android.hardware.graphics.allocator@3.0",
+                "android.hardware.graphics.allocator@4.0",
+                "android.hardware.graphics.allocator-V2-ndk",
+                "android.hardware.graphics.common-V7-ndk",
+                "android.hardware.graphics.common@1.2",
+                "android.hardware.graphics.mapper@2.0",
+                "android.hardware.graphics.mapper@2.1",
+                "android.hardware.graphics.mapper@3.0",
+                "android.hardware.graphics.mapper@4.0",
+                "libbase",
+                "libbinder_ndk",
+                "libcutils",
+                "libgralloctypes",
                 "libhidlbase",
+                "libsync",
                 "libutils",
                 "liblog",
-                "libdapparamstorage",
-                "libdlbdsservice",
-                "vendor.dolby.hardware.dms@2.0",
                 "libc++",
                 "libc",
                 "libm",
@@ -560,25 +662,131 @@ cc_prebuilt_library_shared {
     },
     compile_multilib: "64",
     prefer: true,
-    soc_specific: true,
+    device_specific: true,
 }
 
-cc_prebuilt_binary {
-    name: "vendor.dolby.hardware.dms@2.0-service",
-    owner: "xiaomi",
+cc_prebuilt_library_shared {
+    name: "vendor.dolby_sp.hardware.dmssp@2.0-impl",
+    owner: "oneplus",
+    strip: {
+        none: true,
+    },
     target: {
         android_arm64: {
             srcs: [
-                "proprietary/vendor/bin/hw/vendor.dolby.hardware.dms@2.0-service",
+                "proprietary/odm/lib64/vendor.dolby_sp.hardware.dmssp@2.0-impl.so",
+            ],
+            shared_libs: [
+                "libhidlbase",
+                "libutils",
+                "liblog",
+                "libdapparamstorage_sp",
+                "libdlbdsservice_sp",
+                "vendor.dolby_sp.hardware.dmssp@2.0",
+                "libc++",
+                "libc",
+                "libm",
+                "libdl",
+            ],
+        },
+    },
+    compile_multilib: "64",
+    prefer: true,
+    device_specific: true,
+}
+
+cc_prebuilt_library_shared {
+    name: "vendor.dolby_sp.hardware.dmssp@2.0",
+    owner: "oneplus",
+    strip: {
+        none: true,
+    },
+    target: {
+        android_arm64: {
+            srcs: [
+                "proprietary/odm/lib64/vendor.dolby_sp.hardware.dmssp@2.0.so",
+            ],
+            shared_libs: [
+                "libhidlbase",
+                "liblog",
+                "libutils",
+                "libcutils",
+                "libc++",
+                "libc",
+                "libm",
+                "libdl",
+            ],
+        },
+    },
+    compile_multilib: "64",
+    prefer: true,
+    device_specific: true,
+}
+
+cc_prebuilt_library_shared {
+    name: "vendor.dolby_v3_6.hardware.dms360@2.0-impl",
+    owner: "oneplus",
+    strip: {
+        none: true,
+    },
+    target: {
+        android_arm64: {
+            srcs: [
+                "proprietary/odm/lib64/vendor.dolby_v3_6.hardware.dms360@2.0-impl.so",
+            ],
+            shared_libs: [
+                "libhidlbase",
+                "libutils",
+                "liblog",
+                "libdapparamstorage_v3_6",
+                "libdlbdsservice_v3_6",
+                "vendor.dolby_v3_6.hardware.dms360@2.0",
+                "libc++",
+                "libc",
+                "libm",
+                "libdl",
+            ],
+        },
+    },
+    compile_multilib: "64",
+    prefer: true,
+    device_specific: true,
+}
+
+prebuilt_etc_xml {
+    name: "manifest_dax_dolby_v3_6.xml",
+    owner: "oneplus",
+    src: "proprietary/odm/etc/vintf/manifest/manifest_dax_dolby_v3_6.xml",
+    filename_from_src: true,
+    sub_dir: "vintf/manifest",
+    device_specific: true,
+}
+
+prebuilt_etc_xml {
+    name: "vendor.dolby.hardware.dms.xml",
+    owner: "oneplus",
+    src: "proprietary/odm/etc/vintf/manifest/vendor.dolby.hardware.dms.xml",
+    filename_from_src: true,
+    sub_dir: "vintf/manifest",
+    device_specific: true,
+}
+
+cc_prebuilt_binary {
+    name: "vendor.dolby_sp.hardware.dmssp@2.0-service",
+    owner: "oneplus",
+    target: {
+        android_arm64: {
+            srcs: [
+                "proprietary/odm/bin/hw/vendor.dolby_sp.hardware.dmssp@2.0-service",
             ],
             shared_libs: [
                 "liblog",
                 "libutils",
                 "libhidlbase",
-                "libdapparamstorage",
-                "libdlbdsservice",
-                "vendor.dolby.hardware.dms@2.0",
-                "vendor.dolby.hardware.dms@2.0-impl",
+                "libdapparamstorage_sp",
+                "libdlbdsservice_sp",
+                "vendor.dolby_sp.hardware.dmssp@2.0",
+                "vendor.dolby_sp.hardware.dmssp@2.0-impl",
                 "libc++",
                 "libc",
                 "libm",
@@ -592,33 +800,29 @@ cc_prebuilt_binary {
     },
     prefer: true,
     relative_install_path: "hw",
-    soc_specific: true,
+    device_specific: true,
 }
 
 cc_prebuilt_binary {
-    name: "vendor.dolby.media.c2@1.0-service",
-    owner: "xiaomi",
+    name: "vendor.dolby_sp.media.c2@1.0-service",
+    owner: "oneplus",
     target: {
         android_arm64: {
             srcs: [
-                "proprietary/vendor/bin/hw/vendor.dolby.media.c2@1.0-service",
+                "proprietary/odm/bin/hw/vendor.dolby_sp.media.c2@1.0-service",
             ],
             shared_libs: [
                 "libbase",
                 "liblog",
                 "libcodec2",
+                "libcodec2_vndk_sp",
                 "libutils",
                 "android.hardware.media.c2@1.0",
-                "android.hardware.media.c2@1.1",
-                "android.hardware.media.c2@1.2",
-                "libcodec2_hidl@1.0",
-                "libcodec2_hidl@1.1",
-                "libcodec2_hidl@1.2",
-                "libcodec2_vndk",
-                "libhidlbase",
+                "libcodec2_hidl@1.0_sp",
                 "libavservices_minijail",
+                "libhidlbase",
                 "libbinder",
-                "libcodec2_store_dolby",
+                "libcodec2_store_dolby_sp",
                 "libc++",
                 "libc",
                 "libm",
@@ -632,5 +836,37 @@ cc_prebuilt_binary {
     },
     prefer: true,
     relative_install_path: "hw",
-    soc_specific: true,
+    device_specific: true,
+}
+
+cc_prebuilt_binary {
+    name: "vendor.dolby_v3_6.hardware.dms360@2.0-service",
+    owner: "oneplus",
+    target: {
+        android_arm64: {
+            srcs: [
+                "proprietary/odm/bin/hw/vendor.dolby_v3_6.hardware.dms360@2.0-service",
+            ],
+            shared_libs: [
+                "liblog",
+                "libutils",
+                "libhidlbase",
+                "libdapparamstorage_v3_6",
+                "libdlbdsservice_v3_6",
+                "vendor.dolby_v3_6.hardware.dms360@2.0",
+                "vendor.dolby_v3_6.hardware.dms360@2.0-impl",
+                "libc++",
+                "libc",
+                "libm",
+                "libdl",
+            ],
+        },
+    },
+    compile_multilib: "64",
+    strip: {
+        none: true,
+    },
+    prefer: true,
+    relative_install_path: "hw",
+    device_specific: true,
 }
