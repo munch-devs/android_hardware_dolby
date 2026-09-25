@@ -8,6 +8,10 @@ $(call inherit-product, vendor/dolby/common/common-vendor.mk)
 
 DOLBY_PATH := vendor/dolby
 
+# Configs
+PRODUCT_COPY_FILES += \
+    $(DOLBY_PATH)/configs/dolby/dax-default.xml:$(TARGET_COPY_OUT_VENDOR)/etc/dolby/dax-default.xml
+
 # Properties
 PRODUCT_VENDOR_PROPERTIES += \
     ro.vendor.dolby.dax.version=DAX3_3.7.0.8_r1 \
