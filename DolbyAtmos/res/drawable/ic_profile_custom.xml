@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Decorative artwork for the "custom" profile card. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="360dp" android:height="200dp"
+    android:viewportWidth="360" android:viewportHeight="200">
+    <path android:pathData="M0,0h360v200h-360z">
+        <aapt:attr name="android:fillColor">
+            <gradient android:type="linear" android:startX="0" android:startY="0" android:endX="360" android:endY="200">
+                <item android:offset="0" android:color="#37474F" />
+                <item android:offset="1" android:color="#78909C" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path android:pathData="M-50,30 a90,90 0 1,0 180,0 a90,90 0 1,0 -180,0 z" android:fillColor="#FFFFFF" android:fillAlpha="0.08" />
+    <path android:pathData="M220,190 a110,110 0 1,0 220,0 a110,110 0 1,0 -220,0 z" android:fillColor="#FFFFFF" android:fillAlpha="0.1" />
+    <path android:pathData="M265,20 a35,35 0 1,0 70,0 a35,35 0 1,0 -70,0 z" android:fillColor="#FFFFFF" android:fillAlpha="0.07" />
+    <path android:pathData="M85,62 L275,62" android:strokeColor="#FFFFFF" android:strokeWidth="7" android:strokeLineCap="round" android:strokeAlpha="0.35" />
+    <path android:pathData="M85,62 L135,62" android:strokeColor="#FFFFFF" android:strokeWidth="7" android:strokeLineCap="round" android:strokeAlpha="0.95" />
+    <path android:pathData="M120,62 a15,15 0 1,0 30,0 a15,15 0 1,0 -30,0 z" android:fillColor="#FFFFFF" />
+    <path android:pathData="M120,62 a15,15 0 1,0 30,0 a15,15 0 1,0 -30,0 z" android:strokeColor="#000000" android:strokeWidth="1.5" android:strokeLineCap="round" android:strokeAlpha="0.12" />
+    <path android:pathData="M85,100 L275,100" android:strokeColor="#FFFFFF" android:strokeWidth="7" android:strokeLineCap="round" android:strokeAlpha="0.35" />
+    <path android:pathData="M85,100 L225,100" android:strokeColor="#FFFFFF" android:strokeWidth="7" android:strokeLineCap="round" android:strokeAlpha="0.95" />
+    <path android:pathData="M210,100 a15,15 0 1,0 30,0 a15,15 0 1,0 -30,0 z" android:fillColor="#FFFFFF" />
+    <path android:pathData="M210,100 a15,15 0 1,0 30,0 a15,15 0 1,0 -30,0 z" android:strokeColor="#000000" android:strokeWidth="1.5" android:strokeLineCap="round" android:strokeAlpha="0.12" />
+    <path android:pathData="M85,138 L275,138" android:strokeColor="#FFFFFF" android:strokeWidth="7" android:strokeLineCap="round" android:strokeAlpha="0.35" />
+    <path android:pathData="M85,138 L172,138" android:strokeColor="#FFFFFF" android:strokeWidth="7" android:strokeLineCap="round" android:strokeAlpha="0.95" />
+    <path android:pathData="M157,138 a15,15 0 1,0 30,0 a15,15 0 1,0 -30,0 z" android:fillColor="#FFFFFF" />
+    <path android:pathData="M157,138 a15,15 0 1,0 30,0 a15,15 0 1,0 -30,0 z" android:strokeColor="#000000" android:strokeWidth="1.5" android:strokeLineCap="round" android:strokeAlpha="0.12" />
+</vector>

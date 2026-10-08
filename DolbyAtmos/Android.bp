@@ -1,0 +1,38 @@
+//
+// Copyright (C) 2017-2021 The LineageOS Project
+//           (C) 2023-24 Paranoid Android
+//
+// SPDX-License-Identifier: Apache-2.0
+//
+
+android_app {
+    name: "DolbyAtmos",
+
+    srcs: ["src/**/*.kt"],
+    resource_dirs: ["res"],
+    certificate: "platform",
+    platform_apis: true,
+    system_ext_specific: true,
+    privileged: true,
+
+    overrides: [
+        "MusicFX",
+        "AudioFX",
+    ],
+    static_libs: [
+        "SettingsLib",
+        "SpaLib",
+        "androidx.activity_activity-compose",
+        "androidx.compose.animation_animation",
+        "androidx.compose.foundation_foundation",
+        "androidx.compose.material3_material3",
+        "androidx.compose.material_material-icons-extended",
+        "androidx.compose.runtime_runtime",
+        "androidx.compose.ui_ui",
+        "androidx.lifecycle_lifecycle-runtime-compose",
+        "androidx.lifecycle_lifecycle-viewmodel-compose",
+        "androidx.preference_preference",
+        "kotlinx_coroutines",
+        "kotlinx_coroutines_android",
+    ],
+}

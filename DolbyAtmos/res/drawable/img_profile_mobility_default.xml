@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Decorative artwork for the "mobility (default)" profile card. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="360dp" android:height="200dp"
+    android:viewportWidth="360" android:viewportHeight="200">
+    <path android:pathData="M0,0h360v200h-360z">
+        <aapt:attr name="android:fillColor">
+            <gradient android:type="linear" android:startX="0" android:startY="0" android:endX="360" android:endY="200">
+                <item android:offset="0" android:color="#00897B" />
+                <item android:offset="1" android:color="#26C6DA" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path android:pathData="M-50,30 a90,90 0 1,0 180,0 a90,90 0 1,0 -180,0 z" android:fillColor="#FFFFFF" android:fillAlpha="0.08" />
+    <path android:pathData="M220,190 a110,110 0 1,0 220,0 a110,110 0 1,0 -220,0 z" android:fillColor="#FFFFFF" android:fillAlpha="0.1" />
+    <path android:pathData="M265,20 a35,35 0 1,0 70,0 a35,35 0 1,0 -70,0 z" android:fillColor="#FFFFFF" android:fillAlpha="0.07" />
+    <path android:pathData="M110,100 a70,70 0 1,0 140,0 a70,70 0 1,0 -140,0 z" android:fillColor="#FFFFFF" android:fillAlpha="0.12" />
+    <group android:translateX="120" android:translateY="40" android:scaleX="5" android:scaleY="5">
+        <path android:pathData="M12,2C8.13,2 5,5.13 5,9c0,5.25 7,13 7,13s7,-7.75 7,-13c0,-3.87 -3.13,-7 -7,-7zM12,11.5c-1.38,0 -2.5,-1.12 -2.5,-2.5s1.12,-2.5 2.5,-2.5 2.5,1.12 2.5,2.5 -1.12,2.5 -2.5,2.5z" android:fillColor="#FFFFFF" android:fillType="evenOdd" />
+    </group>
+</vector>
