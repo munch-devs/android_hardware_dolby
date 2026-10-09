@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2023-24 Paranoid Android
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+
+    <!-- Dolby Atmos -->
+    <string name="dolby_title">Dolby Atmos</string>
+    <string name="dolby_subtitle">Trải nghiệm âm thanh đắm chìm</string>
+    <string name="dolby_enable">Sử dụng Dolby Atmos</string>
+    <string name="dolby_profile_title">Chọn cấu hình</string>
+    <string name="dolby_preset">Bộ chỉnh âm đồ hoạ</string>
+    <string name="dolby_off">Tắt</string>
+    <string name="dolby_on">Bật</string>
+    <string name="dolby_low">Thấp</string>
+    <string name="dolby_medium">Trung bình</string>
+    <string name="dolby_high">Cao</string>
+    <string name="dolby_max">Tối đa</string>
+    <string name="dolby_unknown">Không xác định</string>
+    <string name="dolby_on_with_profile">Bật (%1$s)</string>
+    <string name="dolby_bass_enhancer">Tăng cường âm trầm</string>
+    <string name="dolby_dialogue_enhancer">Tăng cường giọng nói</string>
+    <string name="dolby_spk_virtualizer">Ảo hoá loa</string>
+    <string name="dolby_hp_virtualizer">Ảo hoá tai nghe</string>
+    <string name="dolby_stereo_widening">Mở rộng âm thanh nổi</string>
+    <string name="dolby_volume_leveler">Cân bằng âm lượng</string>
+    <string name="dolby_audio_tuning">Tinh chỉnh âm thanh</string>
+    <string name="dolby_surround_virtualizer">Ảo hoá âm thanh vòm</string>
+    <string name="dolby_bass_enhancer_desc">Tăng cường âm thanh tần số thấp để có âm trầm sâu hơn</string>
+    <string name="dolby_dialogue_enhancer_desc">Làm nổi bật giọng nói để dễ theo dõi hội thoại hơn</string>
+    <string name="dolby_volume_leveler_desc">Cân bằng âm lượng để có trải nghiệm nghe đồng nhất</string>
+    <string name="dolby_spk_virtualizer_desc">Mở rộng không gian âm thanh của loa tích hợp</string>
+    <string name="dolby_hp_virtualizer_desc">Tạo không gian âm thanh vòm qua tai nghe</string>
+    <string name="dolby_connect_headphones">Kết nối tai nghe</string>
+    <string name="dolby_reset_profile">Khôi phục mặc định</string>
+
+    <!-- Dolby profiles -->
+    <string name="dolby_profile_dynamic">Động</string>
+    <string name="dolby_profile_video">Phim/Video</string>
+    <string name="dolby_profile_music">Âm nhạc</string>
+    <string name="dolby_profile_custom">Tuỳ chỉnh</string>
+    <string name="dolby_profile_mobility_default">Di động</string>
+    <string name="dolby_profile_mobility_on_the_go">Đang di chuyển</string>
+    <string name="dolby_profile_mobility_commute">Đi lại</string>
+    <string name="dolby_profile_mobility_travel">Du lịch</string>
+
+    <!-- Dolby equalizer presets -->
+    <string name="dolby_preset_default">Phẳng (tắt)</string>
+    <string name="dolby_preset_rock">Rock</string>
+    <string name="dolby_preset_jazz">Jazz</string>
+    <string name="dolby_preset_pop">Pop</string>
+    <string name="dolby_preset_classical">Cổ điển</string>
+    <string name="dolby_preset_hiphop">Hip Hop</string>
+    <string name="dolby_preset_blues">Blues</string>
+    <string name="dolby_preset_electronic">Điện tử</string>
+    <string name="dolby_preset_metal">Metal</string>
+
+    <!-- Dolby equalizer UI -->
+    <string name="dolby_geq_slider_label_gain">Độ khuếch đại</string>
+    <string name="dolby_geq_preset">Cài đặt sẵn</string>
+    <string name="dolby_geq_preset_name">Tên cài đặt sẵn</string>
+    <string name="dolby_geq_new_preset">Cài đặt sẵn mới</string>
+    <string name="dolby_geq_rename_preset">Đổi tên cài đặt sẵn</string>
+    <string name="dolby_geq_delete_preset">Xoá cài đặt sẵn</string>
+    <string name="dolby_geq_delete_preset_prompt">Bạn có muốn xoá cài đặt sẵn này không?</string>
+    <string name="dolby_geq_reset_gains">Đặt lại độ khuếch đại</string>
+    <string name="dolby_geq_reset_gains_prompt">Bạn có muốn đặt lại cài đặt sẵn này về mặc định không?</string>
+    <string name="dolby_geq_preset_name_exists">Tên cài đặt sẵn đã tồn tại!</string>
+    <string name="dolby_geq_preset_name_too_long">Tên cài đặt sẵn quá dài!</string>
+
+    <!-- Dolby intelligent EQ -->
+    <string name="dolby_ieq">Bộ chỉnh âm thông minh</string>
+    <string name="dolby_balanced">Cân bằng</string>
+    <string name="dolby_warm">Ấm</string>
+    <string name="dolby_detailed">Chi tiết</string>
+
+    <!-- Tabs and profile flashcards -->
+    <string name="dolby_tab_home">Trang chủ</string>
+    <string name="dolby_tab_equalizer">Bộ chỉnh âm</string>
+    <string name="dolby_tab_advanced">Nâng cao</string>
+    <string name="dolby_profile_dynamic_desc">Tự động thích ứng âm thanh với nội dung đang phát, bạn sẽ không cần phải chuyển đổi thủ công.</string>
+    <string name="dolby_profile_video_desc">Âm thanh rộng, đắm chìm với hội thoại rõ nét, được tinh chỉnh cho phim, phim nhiều tập và video.</string>
+    <string name="dolby_profile_music_desc">Âm thanh cân bằng, chi tiết với âm trầm đầy đặn hơn và không gian rộng rãi cho âm nhạc.</string>
+    <string name="dolby_profile_mobility_default_desc">Nghe hàng ngày khi đang di chuyển, với hội thoại rõ nét và tiếng ồn xung quanh được kiểm soát tốt.</string>
+    <string name="dolby_profile_mobility_on_the_go_desc">Được tinh chỉnh cho việc đi bộ và chạy việc vặt: giọng nói vẫn rõ ràng và âm thanh thích ứng với môi trường nhộn nhịp.</string>
+    <string name="dolby_profile_mobility_commute_desc">Âm thanh đầy đặn hơn với hội thoại mạnh mẽ hơn dành cho tàu hoả, xe buýt và các chuyến đi có tiếng động cơ lớn.</string>
+    <string name="dolby_profile_mobility_travel_desc">Sự kết hợp cân bằng, mở rộng dành cho các hành trình dài, chuyến bay và loa khách sạn.</string>
+    <string name="dolby_profile_custom_desc">Bản phối của riêng bạn. Tinh chỉnh bộ chỉnh âm và các hiệu ứng theo ý thích.</string>
+    <string name="dolby_geq_view_bars">Thanh trượt</string>
+    <string name="dolby_geq_view_curve">Đường cong</string>
+    <string name="dolby_geq_view">Chế độ xem bộ chỉnh âm</string>
+    <string name="dolby_geq_band_config">Cấu hình dải tần</string>
+    <string name="dolby_geq_band_config_desc">Chọn độ chính xác của bộ chỉnh âm: càng nhiều dải tần = kiểm soát càng chi tiết</string>
+    <string name="dolby_geq_bands_count">%1$d dải tần</string>
+    <string name="dolby_geq_response_title">Biểu đồ tần số tương tác</string>
+    <string name="dolby_geq_response_desc_curve">Kéo các điểm điều khiển để điều chỉnh độ khuếch đại (±%1$d dB) · %2$s - %3$s</string>
+    <string name="dolby_geq_response_desc_sliders">Di chuyển các thanh trượt để điều chỉnh độ khuếch đại (±%1$d dB) · %2$s - %3$s</string>
+</resources>
